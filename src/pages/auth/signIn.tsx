@@ -1,4 +1,4 @@
-import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next"
+import type { GetServerSidePropsContext } from "next"
 import { getProviders, signIn } from "next-auth/react"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../api/auth/[...nextauth]"

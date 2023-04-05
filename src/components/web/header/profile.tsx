@@ -1,10 +1,13 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { HeaderProps, classNames, RoleEnum } from './main'
+import { classNames } from './main'
 import { signIn, signOut} from "next-auth/react"
 import Link from 'next/link'
+import { HeaderProps } from 'next-auth'
+import { RoleEnum } from '@/enum/role-enum'
 
 export default function Profile(props:HeaderProps) {
+    const image = props?.session?.user?.image;
     if (props?.session?.user) {
         return (
             <>
@@ -16,7 +19,7 @@ export default function Profile(props:HeaderProps) {
                                 <span className="sr-only">Open user menu</span>
                                 <img
                                     className="h-8 w-8 rounded-full"
-                                    src={props?.session?.user?.image}
+                                    src={image !== null ? image : undefined}
                                     alt="profile picture"
                                 />
                             </Menu.Button>

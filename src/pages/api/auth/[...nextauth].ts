@@ -1,19 +1,8 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import { User,Account,Profile } from "next-auth";
-import { CredentialInput } from "next-auth/providers";
+import { AuthOptions } from "next-auth";
 
-type signInType = {
-    user: User,
-    account: Account
-    profile?: Profile
-    email?: {
-        verificationRequest?: boolean;
-    },
-    credentials?: Record<string, CredentialInput>;
-}
-
-export const authOptions = {
+export const authOptions:AuthOptions = {
     providers:[
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID ?? '',
@@ -24,7 +13,7 @@ export const authOptions = {
         signIn: '/auth/signIn'
     },
     callbacks: {
-        async signIn({ user, account, profile, email, credentials }:signInType) {
+        async signIn({ user, account, profile, email, credentials }) {
             const url = process.env.API_URL + "/auth/signIn";
             const response = await fetch(url, {
                 method: "POST",
@@ -41,7 +30,8 @@ export const authOptions = {
             });
             
             const body = await response.json();
-            if (response.ok) {
+
+            if (account && response.ok) {
                 const mergedUser = {...user, ...body};
                 account.access_token = body.accessToken;
                 account.roles = body.roles;
@@ -51,14 +41,14 @@ export const authOptions = {
             
             return false;
         },
-        async jwt({ token, account, profile }) {
+        async jwt({ token, account }) {
             if (account) {
               token.access_token = account.access_token
               token.roles = account.roles
             }
             return token
         },
-        async session({ session, token, user }) {
+        async session({ session, token }) {
             session.access_token = token.access_token
             session.roles = token.roles
             

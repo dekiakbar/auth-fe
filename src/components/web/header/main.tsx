@@ -1,26 +1,13 @@
 import { Disclosure } from '@headlessui/react'
-import { Session } from 'next-auth'
 import Profile from './profile';
 import Link from 'next/link';
-
-export enum RoleEnum {
-    ADMIN = 'admin',
-    USER = 'user'
-}
-
-export interface CustomSession extends Session{
-    roles?: RoleEnum[];
-}
-
-export interface HeaderProps {
-    session: CustomSession | null;
-}
+import { HeaderProps } from 'next-auth';
 
 const navigation = [
   { name: 'Home', href: '/', current: false }
 ]
 
-export function classNames(...classes) {
+export function classNames(...classes:string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
