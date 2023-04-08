@@ -9,12 +9,12 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_SECRET ?? "",
     }),
   ],
-  pages: {
-    signIn: "/auth/signIn",
+  theme: {
+    logo: "/images/auth.svg",
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      const url = process.env.API_URL + "/auth/signIn";
+      const url = process.env.API_URL + "/auth/signin";
       const response = await fetch(url, {
         method: "POST",
         headers: {
